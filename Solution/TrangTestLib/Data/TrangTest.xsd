@@ -12,7 +12,7 @@
   <xs:element name="TrangTest" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="TrangTest" msprop:Generator_UserDSName="TrangTest">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="TemperatureTypes" msprop:Generator_TableClassName="TemperatureTypesDataTable" msprop:Generator_TableVarName="tableTemperatureTypes" msprop:Generator_RowChangedName="TemperatureTypesRowChanged" msprop:Generator_TablePropName="TemperatureTypes" msprop:Generator_RowDeletingName="TemperatureTypesRowDeleting" msprop:Generator_RowChangingName="TemperatureTypesRowChanging" msprop:Generator_RowEvHandlerName="TemperatureTypesRowChangeEventHandler" msprop:Generator_RowDeletedName="TemperatureTypesRowDeleted" msprop:Generator_RowClassName="TemperatureTypesRow" msprop:Generator_UserTableName="TemperatureTypes" msprop:Generator_RowEvArgName="TemperatureTypesRowChangeEvent">
+        <xs:element name="TemperatureTypes" msprop:Generator_TableClassName="TemperatureTypesDataTable" msprop:Generator_TableVarName="tableTemperatureTypes" msprop:Generator_TablePropName="TemperatureTypes" msprop:Generator_RowDeletingName="TemperatureTypesRowDeleting" msprop:Generator_RowChangingName="TemperatureTypesRowChanging" msprop:Generator_RowEvHandlerName="TemperatureTypesRowChangeEventHandler" msprop:Generator_RowDeletedName="TemperatureTypesRowDeleted" msprop:Generator_UserTableName="TemperatureTypes" msprop:Generator_RowChangedName="TemperatureTypesRowChanged" msprop:Generator_RowEvArgName="TemperatureTypesRowChangeEvent" msprop:Generator_RowClassName="TemperatureTypesRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="TempType_ID" msprop:Generator_ColumnVarNameInTable="columnTempType_ID" msprop:Generator_ColumnPropNameInRow="TempType_ID" msprop:Generator_ColumnPropNameInTable="TempType_IDColumn" msprop:Generator_UserColumnName="TempType_ID" type="xs:int" />
@@ -33,7 +33,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="TemperatureConversions" msprop:Generator_TableClassName="TemperatureConversionsDataTable" msprop:Generator_TableVarName="tableTemperatureConversions" msprop:Generator_RowChangedName="TemperatureConversionsRowChanged" msprop:Generator_TablePropName="TemperatureConversions" msprop:Generator_RowDeletingName="TemperatureConversionsRowDeleting" msprop:Generator_RowChangingName="TemperatureConversionsRowChanging" msprop:Generator_RowEvHandlerName="TemperatureConversionsRowChangeEventHandler" msprop:Generator_RowDeletedName="TemperatureConversionsRowDeleted" msprop:Generator_RowClassName="TemperatureConversionsRow" msprop:Generator_UserTableName="TemperatureConversions" msprop:Generator_RowEvArgName="TemperatureConversionsRowChangeEvent">
+        <xs:element name="TemperatureConversions" msprop:Generator_TableClassName="TemperatureConversionsDataTable" msprop:Generator_TableVarName="tableTemperatureConversions" msprop:Generator_TablePropName="TemperatureConversions" msprop:Generator_RowDeletingName="TemperatureConversionsRowDeleting" msprop:Generator_RowChangingName="TemperatureConversionsRowChanging" msprop:Generator_RowEvHandlerName="TemperatureConversionsRowChangeEventHandler" msprop:Generator_RowDeletedName="TemperatureConversionsRowDeleted" msprop:Generator_UserTableName="TemperatureConversions" msprop:Generator_RowChangedName="TemperatureConversionsRowChanged" msprop:Generator_RowEvArgName="TemperatureConversionsRowChangeEvent" msprop:Generator_RowClassName="TemperatureConversionsRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="TempCon_ID" msprop:Generator_ColumnVarNameInTable="columnTempCon_ID" msprop:Generator_ColumnPropNameInRow="TempCon_ID" msprop:Generator_ColumnPropNameInTable="TempCon_IDColumn" msprop:Generator_UserColumnName="TempCon_ID" type="xs:int" />
@@ -43,10 +43,10 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="TemperatureThresholds" msprop:Generator_TableClassName="TemperatureThresholdsDataTable" msprop:Generator_TableVarName="tableTemperatureThresholds" msprop:Generator_RowChangedName="TemperatureThresholdsRowChanged" msprop:Generator_TablePropName="TemperatureThresholds" msprop:Generator_RowDeletingName="TemperatureThresholdsRowDeleting" msprop:Generator_RowChangingName="TemperatureThresholdsRowChanging" msprop:Generator_RowEvHandlerName="TemperatureThresholdsRowChangeEventHandler" msprop:Generator_RowDeletedName="TemperatureThresholdsRowDeleted" msprop:Generator_RowClassName="TemperatureThresholdsRow" msprop:Generator_UserTableName="TemperatureThresholds" msprop:Generator_RowEvArgName="TemperatureThresholdsRowChangeEvent">
+        <xs:element name="TemperatureThresholds" msprop:Generator_TableClassName="TemperatureThresholdsDataTable" msprop:Generator_TableVarName="tableTemperatureThresholds" msprop:Generator_TablePropName="TemperatureThresholds" msprop:Generator_RowDeletingName="TemperatureThresholdsRowDeleting" msprop:Generator_RowChangingName="TemperatureThresholdsRowChanging" msprop:Generator_RowEvHandlerName="TemperatureThresholdsRowChangeEventHandler" msprop:Generator_RowDeletedName="TemperatureThresholdsRowDeleted" msprop:Generator_UserTableName="TemperatureThresholds" msprop:Generator_RowChangedName="TemperatureThresholdsRowChanged" msprop:Generator_RowEvArgName="TemperatureThresholdsRowChangeEvent" msprop:Generator_RowClassName="TemperatureThresholdsRow">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="TempThreshold_ID" msprop:Generator_ColumnVarNameInTable="columnTempThreshold_ID" msprop:Generator_ColumnPropNameInRow="TempThreshold_ID" msprop:Generator_ColumnPropNameInTable="TempThreshold_IDColumn" msprop:Generator_UserColumnName="TempThreshold_ID" type="xs:int" />
+              <xs:element name="TempThreshold_ID" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" msprop:Generator_ColumnVarNameInTable="columnTempThreshold_ID" msprop:Generator_ColumnPropNameInRow="TempThreshold_ID" msprop:Generator_ColumnPropNameInTable="TempThreshold_IDColumn" msprop:Generator_UserColumnName="TempThreshold_ID" type="xs:int" />
               <xs:element name="TempThreshold_Name" msprop:Generator_ColumnVarNameInTable="columnTempThreshold_Name" msprop:Generator_ColumnPropNameInRow="TempThreshold_Name" msprop:Generator_ColumnPropNameInTable="TempThreshold_NameColumn" msprop:Generator_UserColumnName="TempThreshold_Name" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
@@ -59,10 +59,10 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="TemperatureAlerts" msprop:Generator_TableClassName="TemperatureAlertsDataTable" msprop:Generator_TableVarName="tableTemperatureAlerts" msprop:Generator_RowChangedName="TemperatureAlertsRowChanged" msprop:Generator_TablePropName="TemperatureAlerts" msprop:Generator_RowDeletingName="TemperatureAlertsRowDeleting" msprop:Generator_RowChangingName="TemperatureAlertsRowChanging" msprop:Generator_RowEvHandlerName="TemperatureAlertsRowChangeEventHandler" msprop:Generator_RowDeletedName="TemperatureAlertsRowDeleted" msprop:Generator_RowClassName="TemperatureAlertsRow" msprop:Generator_UserTableName="TemperatureAlerts" msprop:Generator_RowEvArgName="TemperatureAlertsRowChangeEvent">
+        <xs:element name="TemperatureAlerts" msprop:Generator_TableClassName="TemperatureAlertsDataTable" msprop:Generator_TableVarName="tableTemperatureAlerts" msprop:Generator_TablePropName="TemperatureAlerts" msprop:Generator_RowDeletingName="TemperatureAlertsRowDeleting" msprop:Generator_RowChangingName="TemperatureAlertsRowChanging" msprop:Generator_RowEvHandlerName="TemperatureAlertsRowChangeEventHandler" msprop:Generator_RowDeletedName="TemperatureAlertsRowDeleted" msprop:Generator_UserTableName="TemperatureAlerts" msprop:Generator_RowChangedName="TemperatureAlertsRowChanged" msprop:Generator_RowEvArgName="TemperatureAlertsRowChangeEvent" msprop:Generator_RowClassName="TemperatureAlertsRow">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="TempAlert_ID" msprop:Generator_ColumnVarNameInTable="columnTempAlert_ID" msprop:Generator_ColumnPropNameInRow="TempAlert_ID" msprop:Generator_ColumnPropNameInTable="TempAlert_IDColumn" msprop:Generator_UserColumnName="TempAlert_ID" type="xs:int" />
+              <xs:element name="TempAlert_ID" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" msprop:Generator_ColumnVarNameInTable="columnTempAlert_ID" msprop:Generator_ColumnPropNameInRow="TempAlert_ID" msprop:Generator_ColumnPropNameInTable="TempAlert_IDColumn" msprop:Generator_UserColumnName="TempAlert_ID" type="xs:int" />
               <xs:element name="TempAlert_ThresholdID" msprop:Generator_ColumnVarNameInTable="columnTempAlert_ThresholdID" msprop:Generator_ColumnPropNameInRow="TempAlert_ThresholdID" msprop:Generator_ColumnPropNameInTable="TempAlert_ThresholdIDColumn" msprop:Generator_UserColumnName="TempAlert_ThresholdID" type="xs:int" minOccurs="0" />
               <xs:element name="TempAlert_Direction" msprop:Generator_ColumnVarNameInTable="columnTempAlert_Direction" msprop:Generator_ColumnPropNameInRow="TempAlert_Direction" msprop:Generator_ColumnPropNameInTable="TempAlert_DirectionColumn" msprop:Generator_UserColumnName="TempAlert_Direction" minOccurs="0">
                 <xs:simpleType>
@@ -115,13 +115,13 @@
       <xs:selector xpath=".//mstns:TemperatureThresholds" />
       <xs:field xpath="mstns:TempThreshold_TypeID" />
     </xs:keyref>
-    <xs:keyref name="ConversionFromType" refer="TemperatureTypePK" msdata:ConstraintOnly="true">
-      <xs:selector xpath=".//mstns:TemperatureConversions" />
-      <xs:field xpath="mstns:TempCon_From_TypeID" />
-    </xs:keyref>
     <xs:keyref name="ConversionToType" refer="TemperatureTypePK" msdata:ConstraintOnly="true">
       <xs:selector xpath=".//mstns:TemperatureConversions" />
       <xs:field xpath="mstns:TempCon_To_TypeID" />
+    </xs:keyref>
+    <xs:keyref name="ConversionFromType" refer="TemperatureTypePK" msdata:ConstraintOnly="true">
+      <xs:selector xpath=".//mstns:TemperatureConversions" />
+      <xs:field xpath="mstns:TempCon_From_TypeID" />
     </xs:keyref>
   </xs:element>
 </xs:schema>

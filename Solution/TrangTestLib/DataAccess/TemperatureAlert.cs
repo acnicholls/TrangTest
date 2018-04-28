@@ -43,28 +43,27 @@ namespace TrangTestLib.DataAccess
 
         public void Save()
         {
+            Data.TrangTest ds = Data.XMLOperations.ReadXML();
             Data.TrangTest.TemperatureAlertsRow alertRow;
             if(id > 0)
             {
-                alertRow = Data.XMLOperations.ReadXML().TemperatureAlerts.First(ta => ta.TempAlert_ID == id);
+                alertRow = ds.TemperatureAlerts.First(ta => ta.TempAlert_ID == id);
             }
             else
             {
-                alertRow = Data.XMLOperations.ReadXML().TemperatureAlerts.NewTemperatureAlertsRow();
-                int maxId = Data.XMLOperations.ReadXML().TemperatureAlerts.Max(ta => ta.TempAlert_ID);
-                alertRow.TempAlert_ID = maxId + 1;
+                alertRow = ds.TemperatureAlerts.NewTemperatureAlertsRow();
             }
             alertRow.TempAlert_Direction = direction;
             alertRow.TempAlert_MinFluctuation = minFlucuation;
             alertRow.TempAlert_ThresholdID = thresholdId;
             alertRow.TempAlert_Times = times;
             alertRow.TempAlert_Message = message;
-            alertRow.AcceptChanges();
             // now add it to the dataset
-            Data.TrangTest ds = Data.XMLOperations.ReadXML();
-            ds.TemperatureAlerts.ImportRow(alertRow);
+            ds.TemperatureAlerts.AddTemperatureAlertsRow(alertRow);
             ds.AcceptChanges();
             Data.XMLOperations.WriteXML(ds);
+            if (id < 1)
+                id = alertRow.TempAlert_ID;
         }
 
     }

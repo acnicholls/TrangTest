@@ -285,16 +285,16 @@ namespace TrangTestLib.Data {
             this.tableTemperatureAlerts = new TemperatureAlertsDataTable();
             base.Tables.Add(this.tableTemperatureAlerts);
             global::System.Data.ForeignKeyConstraint fkc;
-            fkc = new global::System.Data.ForeignKeyConstraint("ConversionFromType", new global::System.Data.DataColumn[] {
+            fkc = new global::System.Data.ForeignKeyConstraint("ConversionToType", new global::System.Data.DataColumn[] {
                         this.tableTemperatureTypes.TempType_IDColumn}, new global::System.Data.DataColumn[] {
-                        this.tableTemperatureConversions.TempCon_From_TypeIDColumn});
+                        this.tableTemperatureConversions.TempCon_To_TypeIDColumn});
             this.tableTemperatureConversions.Constraints.Add(fkc);
             fkc.AcceptRejectRule = global::System.Data.AcceptRejectRule.None;
             fkc.DeleteRule = global::System.Data.Rule.Cascade;
             fkc.UpdateRule = global::System.Data.Rule.Cascade;
-            fkc = new global::System.Data.ForeignKeyConstraint("ConversionToType", new global::System.Data.DataColumn[] {
+            fkc = new global::System.Data.ForeignKeyConstraint("ConversionFromType", new global::System.Data.DataColumn[] {
                         this.tableTemperatureTypes.TempType_IDColumn}, new global::System.Data.DataColumn[] {
-                        this.tableTemperatureConversions.TempCon_To_TypeIDColumn});
+                        this.tableTemperatureConversions.TempCon_From_TypeIDColumn});
             this.tableTemperatureConversions.Constraints.Add(fkc);
             fkc.AcceptRejectRule = global::System.Data.AcceptRejectRule.None;
             fkc.DeleteRule = global::System.Data.Rule.Cascade;
@@ -1111,10 +1111,10 @@ namespace TrangTestLib.Data {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public TemperatureThresholdsRow AddTemperatureThresholdsRow(int TempThreshold_ID, string TempThreshold_Name, int TempThreshold_TypeID, double TempThreshold_Value) {
+            public TemperatureThresholdsRow AddTemperatureThresholdsRow(string TempThreshold_Name, int TempThreshold_TypeID, double TempThreshold_Value) {
                 TemperatureThresholdsRow rowTemperatureThresholdsRow = ((TemperatureThresholdsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        TempThreshold_ID,
+                        null,
                         TempThreshold_Name,
                         TempThreshold_TypeID,
                         TempThreshold_Value};
@@ -1166,6 +1166,8 @@ namespace TrangTestLib.Data {
                 base.Columns.Add(this.columnTempThreshold_Value);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("TemperatureThresholdPK", new global::System.Data.DataColumn[] {
                                 this.columnTempThreshold_ID}, true));
+                this.columnTempThreshold_ID.AutoIncrement = true;
+                this.columnTempThreshold_ID.AutoIncrementSeed = 1;
                 this.columnTempThreshold_ID.AllowDBNull = false;
                 this.columnTempThreshold_ID.Unique = true;
                 this.columnTempThreshold_Name.MaxLength = 50;
@@ -1432,10 +1434,10 @@ namespace TrangTestLib.Data {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public TemperatureAlertsRow AddTemperatureAlertsRow(int TempAlert_ID, int TempAlert_ThresholdID, string TempAlert_Direction, double TempAlert_MinFluctuation, string TempAlert_Times, string TempAlert_Message) {
+            public TemperatureAlertsRow AddTemperatureAlertsRow(int TempAlert_ThresholdID, string TempAlert_Direction, double TempAlert_MinFluctuation, string TempAlert_Times, string TempAlert_Message) {
                 TemperatureAlertsRow rowTemperatureAlertsRow = ((TemperatureAlertsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        TempAlert_ID,
+                        null,
                         TempAlert_ThresholdID,
                         TempAlert_Direction,
                         TempAlert_MinFluctuation,
@@ -1495,6 +1497,8 @@ namespace TrangTestLib.Data {
                 base.Columns.Add(this.columnTempAlert_Message);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("TemperatureAlertPK", new global::System.Data.DataColumn[] {
                                 this.columnTempAlert_ID}, true));
+                this.columnTempAlert_ID.AutoIncrement = true;
+                this.columnTempAlert_ID.AutoIncrementSeed = 1;
                 this.columnTempAlert_ID.AllowDBNull = false;
                 this.columnTempAlert_ID.Unique = true;
                 this.columnTempAlert_Direction.MaxLength = 1;

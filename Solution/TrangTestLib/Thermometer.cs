@@ -14,6 +14,14 @@ namespace TrangTestLib
 
         public event EventHandler<AlertEventArgs> RaiseAlert;
         public event EventHandler<OutputEventArgs> OutputTemps;
+        protected void OnRaiseAlert(AlertEventArgs e)
+        {
+            RaiseAlert(this, e);
+        }
+        protected void OnOutputTemps(OutputEventArgs e)
+        {
+            OutputTemps(this, e);
+        }
 
         public Thermometer()
         {
@@ -52,13 +60,16 @@ namespace TrangTestLib
                     val2 = convTemp.TempValue;
                 }
 
-                if(!TempValueMatchCheck(val1, val2))
+                if(TempValueMatchCheck(val1, val2))
                 {
                     if(CheckAlertCriteria(tr.TempThreshold_ID, out alertId))
                     {
+                        DataAccess.TemperatureAlert alert = new DataAccess.TemperatureAlert(alertId);
                         AlertEventArgs args = new AlertEventArgs();
-                        args.AlertId = alertId;
-                        RaiseAlert(this, args);
+                        args.AlertId = alert.Id;
+                        args.AlertName = new DataAccess.TemperatureThreshold(alert.ThresholdId).Name;
+                        args.AlertMessage = alert.Message;
+                        OnRaiseAlert(args);
                     }
                 }
 
@@ -67,8 +78,9 @@ namespace TrangTestLib
             // invoke the callers output method
             OutputEventArgs outputArgs = new OutputEventArgs();
             outputArgs.InputTemp = currentTemp;
-            OutputTemps(this, outputArgs);
+            OnOutputTemps(outputArgs);
         }
+
 
         private bool TempValueMatchCheck(double _val1, double _val2)
         {
@@ -93,8 +105,9 @@ namespace TrangTestLib
                 // check that the direction is valid
                 bool dirCheck = DirectionCheck(aRow.TempAlert_Direction);
 
-                bool timesCheck = false;
                 // check that we haven't already alerted the user more than the allowed times
+                bool timesCheck = TimesCheck(aRow.TempAlert_ID, aRow.TempAlert_Times);
+                // now put those three together to check if we've matched an alert.
                 returnValue = fluxCheck & dirCheck & timesCheck;
                 if(returnValue)
                 {
@@ -107,19 +120,29 @@ namespace TrangTestLib
 
         private bool FlucuationCheck(double _minFlux)
         {
-            double checkValue = ChangeAmount;
-            if (checkValue < 0)
-                checkValue = checkValue * -1;
-            return checkValue > _minFlux;
+            if (_minFlux > 0)
+            {
+                double checkValue = ChangeAmount;
+                if (checkValue < 0)
+                    checkValue = checkValue * -1;
+                return checkValue > _minFlux;
+            }
+            else
+                return true;
         }
 
         private bool DirectionCheck(string _direction)
         {
-            string dir = CheckDirectionOfChange;
-            if (dir != "N")
-                return dir == _direction;
+            if (_direction != "")
+            {
+                string dir = CheckDirectionOfChange;
+                if (dir != "N")
+                    return dir == _direction;
+                else
+                    return false;
+            }
             else
-                return false;
+                return true;
         }
 
         private bool TimesCheck(int _alertId, string _timesAllowed)
@@ -134,25 +157,30 @@ namespace TrangTestLib
         {
             get
             {
-                if(prevTemp.TempType.Indicator == currentTemp.TempType.Indicator)
+                if (prevTemp != null)
                 {
-                    if (prevTemp.TempValue > currentTemp.TempValue)
-                        return "D";
-                    else if (prevTemp.TempValue < currentTemp.TempValue)
-                        return "R";
+                    if (prevTemp.TempType.Indicator == currentTemp.TempType.Indicator)
+                    {
+                        if (prevTemp.TempValue > currentTemp.TempValue)
+                            return "D";
+                        else if (prevTemp.TempValue < currentTemp.TempValue)
+                            return "R";
+                        else
+                            return "N";
+                    }
                     else
-                        return "N";
+                    {
+                        Temperature newCurrentTemp = new Temperature(currentTemp.ConvertedTemperature(prevTemp.TempType.Indicator));
+                        if (prevTemp.TempValue > newCurrentTemp.TempValue)
+                            return "D";
+                        else if (prevTemp.TempValue < newCurrentTemp.TempValue)
+                            return "R";
+                        else
+                            return "N";
+                    }
                 }
                 else
-                {
-                    Temperature newCurrentTemp = new Temperature(currentTemp.ConvertedTemperature(prevTemp.TempType.Indicator));
-                    if (prevTemp.TempValue > newCurrentTemp.TempValue)
-                        return "D";
-                    else if (prevTemp.TempValue < newCurrentTemp.TempValue)
-                        return "R";
-                    else
-                        return "N";
-                }
+                    return "N";
             }
         }
 
@@ -160,15 +188,20 @@ namespace TrangTestLib
         {
             get
             {
-                if (prevTemp.TempType.Indicator == currentTemp.TempType.Indicator)
+                if (prevTemp != null)
                 {
-                    return Math.Abs(prevTemp.TempValue - currentTemp.TempValue);
+                    if (prevTemp.TempType.Indicator == currentTemp.TempType.Indicator)
+                    {
+                        return Math.Abs(prevTemp.TempValue - currentTemp.TempValue);
+                    }
+                    else
+                    {
+                        Temperature newCurrentTemp = new Temperature(currentTemp.ConvertedTemperature(prevTemp.TempType.Indicator));
+                        return Math.Abs(prevTemp.TempValue - newCurrentTemp.TempValue);
+                    }
                 }
                 else
-                {
-                    Temperature newCurrentTemp = new Temperature(currentTemp.ConvertedTemperature(prevTemp.TempType.Indicator));
-                    return Math.Abs(prevTemp.TempValue - newCurrentTemp.TempValue);
-                }
+                    return 0;
             }
         }
     }

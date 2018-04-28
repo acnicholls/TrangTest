@@ -14,9 +14,57 @@ namespace TrangTestStub
 {
     public partial class Form1 : Form
     {
+        private string validationMessage = "";
+        TemperatureAlert editAlert;
+        TrangTestLib.Thermometer thermometer = new TrangTestLib.Thermometer();
+        private class DisplayItem
+        {
+            public string tempC;
+            public string tempF;
+        }
+
+        List<DisplayItem> displayItems = new List<DisplayItem>();
+
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void AddEventHandlers()
+        {
+            thermometer.OutputTemps += Thermometer_OutputTemps;
+            thermometer.RaiseAlert += Thermometer_RaiseAlert;
+        }
+
+        private void Thermometer_RaiseAlert(object sender, TrangTestLib.AlertEventArgs e)
+        {
+            gbAlert.Visible = true;
+            gbAlert.Text = "Alert: " + e.AlertName;
+            txtAlertMessage.Text = System.Environment.NewLine + e.AlertMessage;
+            txtAlertMessage.TextAlign = HorizontalAlignment.Center;
+            txtAlertMessage.BackColor = Color.Red;
+        }
+
+        private void Thermometer_OutputTemps(object sender, TrangTestLib.OutputEventArgs e)
+        {
+            DisplayItem item = new DisplayItem();
+            item.tempC = e.InputTemp.ConvertedTemperature("C");
+            item.tempF = e.InputTemp.ConvertedTemperature("F");
+            displayItems.Add(item);
+            SetupOutputGrid();
+
+        }
+
+        private void SetupOutputGrid()
+        {
+            dgvOutput.DataSource = (from d in displayItems
+                                    select new { d.tempC, d.tempF }).ToList();
+
+            dgvOutput.Columns["tempC"].HeaderText = "Celcius";
+            dgvOutput.Columns["tempF"].HeaderText = "Farenheit";
+
+            if(displayItems.Count > 0)
+                dgvOutput.FirstDisplayedScrollingRowIndex = displayItems.Count - 1;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -25,20 +73,167 @@ namespace TrangTestStub
             TrangTest data = TrangTestLib.Data.XMLOperations.ReadXML();
 
             var tempTypes = (from tt in data.TemperatureTypes select new TemperatureType(tt.TempType_ID)).ToList();
-            cbTempType.DataSource = tempTypes;
-            cbTempType.DisplayMember = "Indicator";
-            cbTempType.ValueMember = "Id";
+            cboTempType.DataSource = tempTypes;
+            cboTempType.DisplayMember = "Indicator";
+            cboTempType.ValueMember = "Id";
 
-            cbTempDirection.Items.Add("rises");
-            cbTempDirection.Items.Add("drops");
+            cboTempDirection.Items.Add("rises");
+            cboTempDirection.Items.Add("drops");
 
-            cbAlertTimes.Items.Add("one");
-            cbAlertTimes.Items.Add("every");
+            cboAlertTimes.Items.Add("one");
+            cboAlertTimes.Items.Add("every");
+
+            SetupAlertsGrid();
+
+            AddEventHandlers();
         }
 
         private void btnSaveAlert_Click(object sender, EventArgs e)
         {
+            if(!IsValid)
+            {
+                ShowError(validationMessage);
+                return;
+            }
+            else
+            {
+                if(editAlert == null)
+                    SaveNewAlert();
+                else
+                    SaveAlert();
+                ClearForm();
+                SetupAlertsGrid();
+            }
+        }
 
+        private void SaveAlert()
+        {
+            // define the temperature threshold values
+            TemperatureType tempType = new TemperatureType(Convert.ToInt32(cboTempType.SelectedValue));
+            TemperatureThreshold newThreshold = new TemperatureThreshold(editAlert.ThresholdId);
+            newThreshold.Temperature = Convert.ToDouble(txtThresholdTemp.Text);
+            newThreshold.TypeId = tempType.Id;
+            newThreshold.Name = txtThresholdName.Text;
+            newThreshold.Save();
+            // now define the alert values
+            TemperatureAlert formAlert = new TemperatureAlert(editAlert.Id);
+            formAlert.ThresholdId = newThreshold.Id;
+            formAlert.Message = txtThresholdMessage.Text;
+            if (cbFlux.Checked)
+            {
+                formAlert.MinimumFlucuation = Convert.ToDouble(txtThresholdFlux.Text);
+            }
+            else
+                formAlert.MinimumFlucuation = 0;
+            if (cbDir.Checked)
+            {
+                formAlert.Direction = cboTempDirection.SelectedValue.ToString().ToUpper().Substring(0, 1);
+            }
+            else
+                formAlert.Direction = "";
+            if (cbNum.Checked)
+            {
+                formAlert.Times = cboAlertTimes.SelectedValue.ToString().ToUpper().Substring(0, 1);
+            }
+            else
+                formAlert.Times = "";
+            formAlert.Save();
+            editAlert = null;
+        }
+
+        private void SaveNewAlert()
+        {
+            // define the temperature threshold values
+            TemperatureType tempType = new TemperatureType(Convert.ToInt32(cboTempType.SelectedValue));
+            TemperatureThreshold newThreshold = new TemperatureThreshold();
+            newThreshold.Temperature = Convert.ToDouble(txtThresholdTemp.Text);
+            newThreshold.TypeId = tempType.Id;
+            newThreshold.Name = txtThresholdName.Text;
+            newThreshold.Save();
+            // now define the alert values
+            TemperatureAlert newAlert = new TemperatureAlert();
+            newAlert.ThresholdId = newThreshold.Id;
+            newAlert.Message = txtThresholdMessage.Text;
+            if (cbFlux.Checked)
+            {
+                newAlert.MinimumFlucuation = Convert.ToDouble(txtThresholdFlux.Text);
+            }
+            else
+                newAlert.MinimumFlucuation = 0;
+            if (cbDir.Checked)
+            {
+                newAlert.Direction = cboTempDirection.SelectedItem.ToString().ToUpper().Substring(0, 1);
+            }
+            else
+                newAlert.Direction = "";
+            if (cbNum.Checked)
+            {
+                newAlert.Times = cboAlertTimes.SelectedItem.ToString().ToUpper().Substring(0, 1);
+            }
+            else
+                newAlert.Times = "";
+            newAlert.Save();
+        }
+
+        private bool IsValid
+        {
+            get
+            {
+                // check all the data to make sure it's there and valid.
+                // this could be done per field as the user exits, but this is a one-off
+                bool valid = true;
+                validationMessage = "The following sections have errors;\r\n";
+                // first we need the threshold temperature
+                if(!IsNumber(txtThresholdTemp.Text))
+                {
+                    valid = false;
+                    validationMessage += "Threshold Temperature\r\n";
+                }
+                if(cboTempType.Text == "")
+                {
+                    valid = false;
+                    validationMessage += "Threshold Temperature Type\r\n";
+                }
+                if(cbFlux.Checked)
+                {
+                    if(!IsNumber(txtThresholdFlux.Text))
+                    {
+                        valid = false;
+                        validationMessage += "Minimum Fluctuation\r\n";
+                    }
+                }
+                if(cbDir.Checked)
+                {
+                    if(cboTempDirection.Text == "")
+                    {
+                        valid = false;
+                        validationMessage += "Direction\r\n";
+                    }
+                }
+                if(cbNum.Checked)
+                {
+                    if(cboAlertTimes.Text == "")
+                    {
+                        valid = false;
+                        validationMessage += "Number of Alerts\r\n";
+                    }
+                }
+
+                return valid;
+            }
+        }
+
+        private bool IsNumber(string _inputText)
+        {
+            try
+            {
+                double maybeNumber = Convert.ToDouble(_inputText);
+                return true;
+            }
+            catch(Exception x)
+            {
+                return false;
+            }
         }
 
         private void cbNum_CheckedChanged(object sender, EventArgs e)
@@ -55,5 +250,163 @@ namespace TrangTestStub
         {
             gbFlux.Enabled = cbFlux.Checked;
         }
+
+        private void btnEditAlert_Click(object sender, EventArgs e)
+        {
+            if (dgvAlerts.SelectedRows.Count == 1)
+            {
+                try
+                {
+                    int itemToEdit = Convert.ToInt32(dgvAlerts.SelectedRows[0].Cells["TempAlert_ID"].Value);
+                    editAlert = new TemperatureAlert(itemToEdit);
+                    TemperatureThreshold alertThreshold = new TemperatureThreshold(editAlert.ThresholdId);
+                    // now load the interface with the values
+                    txtThresholdTemp.Text = alertThreshold.Temperature.ToString();
+                    TemperatureType t = new TemperatureType(alertThreshold.TypeId);
+                    SelectItem(cboTempType, t.Indicator);
+                    txtThresholdName.Text = alertThreshold.Name;
+                    if (editAlert.MinimumFlucuation > 0)
+                    {
+                        cbFlux.Checked = true;
+                        txtThresholdFlux.Text = editAlert.MinimumFlucuation.ToString();
+                    }
+                    if (editAlert.Times != "")
+                    {
+                        cbNum.Checked = true;
+                        SelectItem(cboAlertTimes, editAlert.Times);
+                    }
+                    if (editAlert.Direction != "")
+                    {
+                        cbDir.Checked = true;
+                        SelectItem(cboTempDirection, editAlert.Direction);
+                    }
+                    txtThresholdMessage.Text = editAlert.Message;
+                }
+                catch (Exception x)
+                {
+                    ShowError(x.Message);
+                    return;
+                }
+            }
+            else
+                ShowError("You must select an alerts row.");
+        }
+
+        private void SelectItem(ComboBox _control, string _itemToSelect)
+        {
+            foreach (object item in _control.Items)
+            {
+                if (item.ToString().Substring(0, 1).ToUpper() == _itemToSelect)
+                {
+                    _control.SelectedItem = item;
+                    break;
+                }
+            }
+        }
+
+        private void btnDeleteAlert_Click(object sender, EventArgs e)
+        {
+            if (dgvAlerts.SelectedRows.Count == 1)
+            {
+                try
+                {
+                    int itemToDelete = Convert.ToInt32(dgvAlerts.SelectedRows[0].Cells["TempAlert_ID"].Value);
+                    TrangTest db = TrangTestLib.Data.XMLOperations.ReadXML();
+                    TrangTest.TemperatureAlertsRow rowToDelete = db.TemperatureAlerts.First(ar => ar.TempAlert_ID == itemToDelete);
+                    TrangTest.TemperatureThresholdsRow tempToDelete = db.TemperatureThresholds.First(tt => tt.TempThreshold_ID == rowToDelete.TempAlert_ThresholdID);
+                    db.TemperatureAlerts.RemoveTemperatureAlertsRow(rowToDelete);
+                    db.TemperatureThresholds.RemoveTemperatureThresholdsRow(tempToDelete);
+                    db.AcceptChanges();
+                    XMLOperations.WriteXML(db);
+                    SetupAlertsGrid();
+                }
+                catch(Exception x)
+                {
+                    ShowError(x.Message);
+                    return;
+                }
+            }
+            else
+                ShowError("You must select an alerts row.");
+        }
+
+        private void SetupAlertsGrid()
+        {
+            TrangTest data = TrangTestLib.Data.XMLOperations.ReadXML();
+            var alerts = (from at in data.TemperatureAlerts
+                          join tt in data.TemperatureThresholds on at.TempAlert_ThresholdID equals tt.TempThreshold_ID
+                          join t in data.TemperatureTypes on tt.TempThreshold_TypeID equals t.TempType_ID
+                          select new {
+                              at.TempAlert_ID,
+                              tt.TempThreshold_Name,
+                              tt.TempThreshold_Value,
+                              t.TempType_Indicator,
+                              at.TempAlert_MinFluctuation,
+                              at.TempAlert_Direction,
+                              at.TempAlert_Times
+                          }).ToList();
+            dgvAlerts.DataSource = alerts;
+
+            dgvAlerts.Columns["TempAlert_ID"].HeaderText = "ID";
+            dgvAlerts.Columns["TempThreshold_Name"].HeaderText = "Threshold Name";
+            dgvAlerts.Columns["TempThreshold_Value"].HeaderText = "Temp";
+            dgvAlerts.Columns["TempType_Indicator"].HeaderText = "Temp Type";
+            dgvAlerts.Columns["TempAlert_MinFluctuation"].HeaderText = "Min. Fluc.";
+            dgvAlerts.Columns["TempAlert_Direction"].HeaderText = "Dir";
+            dgvAlerts.Columns["TempAlert_Times"].HeaderText = "Once/Every";
+
+
+        }
+
+        private void ClearForm()
+        {
+            cbNum.Checked = false;
+            cbDir.Checked = false;
+            cbFlux.Checked = false;
+            cboAlertTimes.SelectedItem = null;
+            cboTempDirection.SelectedItem = null;
+            cboTempType.SelectedValue = 1;
+            txtThresholdFlux.Text = "";
+            txtThresholdMessage.Text = "";
+            txtThresholdName.Text = "";
+            txtThresholdTemp.Text = "";
+        }
+
+        private void ShowError(string _message)
+        {
+            MessageBox.Show(_message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void ShowMessage(string _message)
+        {
+            MessageBox.Show(_message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btnTest_Click(object sender, EventArgs e)
+        {
+            if (IsNumber(txtDelay.Text))
+            {
+                displayItems.Clear();
+                txtDelay.Enabled = false;
+                string[] temps = txtTestTemps.Text.Split(System.Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                foreach (string t in temps)
+                {
+                    gbAlert.Visible = false;
+                    thermometer.InputTemperature(t);
+                    Application.DoEvents();
+                    System.Threading.Thread.Sleep(Convert.ToInt32(txtDelay.Text) * 1000);
+                }
+                ShowMessage("Done.");
+                txtDelay.Enabled = true;
+            }
+            else
+            {
+                ShowError("You must have a number in the delay field.");
+            }
+        }
+
+
+
+
     }
 }

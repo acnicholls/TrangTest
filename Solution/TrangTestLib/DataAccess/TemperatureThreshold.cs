@@ -33,29 +33,28 @@ namespace TrangTestLib.DataAccess
 
         public void Save()
         {
+            Data.TrangTest ds = Data.XMLOperations.ReadXML();
             // define a new threshold row
             Data.TrangTest.TemperatureThresholdsRow threshRow;
             // are we updating the row or adding a new one?
             if (id > 0)
             {
-                threshRow = Data.XMLOperations.ReadXML().TemperatureThresholds.First(tt => tt.TempThreshold_ID == id);
+                threshRow = ds.TemperatureThresholds.First(tt => tt.TempThreshold_ID == id);
             }
             else
             {
-                threshRow = Data.XMLOperations.ReadXML().TemperatureThresholds.NewTemperatureThresholdsRow();
-                int maxId = Data.XMLOperations.ReadXML().TemperatureThresholds.Max(tt => tt.TempThreshold_ID);
-                threshRow.TempThreshold_ID = maxId + 1;
+                threshRow = ds.TemperatureThresholds.NewTemperatureThresholdsRow();
             }
             // add or update all the values the user can change
             threshRow.TempThreshold_Name = name;
             threshRow.TempThreshold_TypeID = typeId;
             threshRow.TempThreshold_Value = temp;
-            threshRow.AcceptChanges();
             // now save the new threshold to the database
-            Data.TrangTest ds = Data.XMLOperations.ReadXML();
-            ds.TemperatureThresholds.ImportRow(threshRow);
+            ds.TemperatureThresholds.AddTemperatureThresholdsRow(threshRow);
             ds.AcceptChanges();
             Data.XMLOperations.WriteXML(ds);
+            if(id < 1)
+                id = threshRow.TempThreshold_ID;
         }
 
     }

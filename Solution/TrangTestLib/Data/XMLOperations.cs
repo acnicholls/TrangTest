@@ -20,6 +20,7 @@ namespace TrangTestLib.Data
             FileStream defaultData = new FileStream(fileLocation, FileMode.Open, FileAccess.Read, FileShare.Read);
             returnValue.Clear();
             returnValue.ReadXml(defaultData);
+            defaultData.Close();
             return returnValue;
         }
 
@@ -29,10 +30,7 @@ namespace TrangTestLib.Data
         /// <param name="_dataToWrite">data with changes</param>
         public static void WriteXML(TrangTest _dataToWrite)
         {
-            TrangTest currentData = ReadXML();
-            currentData.Merge(_dataToWrite);
-            currentData.AcceptChanges();
-            currentData.WriteXml(fileLocation);
+            _dataToWrite.WriteXml(fileLocation);
         }
 
 

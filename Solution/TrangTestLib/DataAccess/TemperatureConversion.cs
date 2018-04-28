@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.JScript;
+using System;
 
 namespace TrangTestLib.DataAccess
 {
@@ -72,7 +73,7 @@ namespace TrangTestLib.DataAccess
             Microsoft.JScript.Vsa.VsaEngine calcEngine = Microsoft.JScript.Vsa.VsaEngine.CreateEngine();
             string formula = string.Format(ConversionFormula(_from, _to), temperature);
             object result = Eval.JScriptEvaluate(formula, calcEngine);
-            return Convert.ToNumber(result);
+            return Math.Round(System.Convert.ToDouble(result), 1);
         }
 
     }

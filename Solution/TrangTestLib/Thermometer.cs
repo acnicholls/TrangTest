@@ -23,12 +23,19 @@ namespace TrangTestLib
             OutputTemps(this, e);
         }
 
+        /// <summary>
+        /// constructore
+        /// </summary>
         public Thermometer()
         {
             this.RaiseAlert += Thermometer_RaiseAlert;
         }
 
-
+        /// <summary>
+        /// handles the thermomenters part of raising alerts
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Thermometer_RaiseAlert(object sender, AlertEventArgs e)
         {
             NumberOfAlerts.AddTimeRasied(e.AlertId);
@@ -62,8 +69,10 @@ namespace TrangTestLib
 
                 if(TempValueMatchCheck(val1, val2))
                 {
+                    // if we have a threshold match, check all other criteria
                     if(CheckAlertCriteria(tr.TempThreshold_ID, out alertId))
                     {
+                        // if all criteria are met, raise the alert.
                         DataAccess.TemperatureAlert alert = new DataAccess.TemperatureAlert(alertId);
                         AlertEventArgs args = new AlertEventArgs();
                         args.AlertId = alert.Id;
@@ -81,7 +90,12 @@ namespace TrangTestLib
             OnOutputTemps(outputArgs);
         }
 
-
+        /// <summary>
+        /// checks two numerical values to see if they match 
+        /// </summary>
+        /// <param name="_val1"></param>
+        /// <param name="_val2"></param>
+        /// <returns></returns>
         private bool TempValueMatchCheck(double _val1, double _val2)
         {
             if (_val1 == _val2)
@@ -90,6 +104,12 @@ namespace TrangTestLib
                 return false;
         }
 
+        /// <summary>
+        /// checks all criteria between the current temperature and the previous temperature
+        /// </summary>
+        /// <param name="_thresholdId"></param>
+        /// <param name="_alertId"></param>
+        /// <returns></returns>
         private bool CheckAlertCriteria(int _thresholdId, out int _alertId)
         {
             bool returnValue = true;
@@ -118,6 +138,11 @@ namespace TrangTestLib
             return returnValue;
         }
 
+        /// <summary>
+        /// checks if the fluctuation was over the current alert allowed limit
+        /// </summary>
+        /// <param name="_minFlux"></param>
+        /// <returns></returns>
         private bool FlucuationCheck(double _minFlux)
         {
             if (_minFlux > 0)
@@ -131,6 +156,11 @@ namespace TrangTestLib
                 return true;
         }
 
+        /// <summary>
+        /// checks if the direction between the previous temp and current temp match the current alert
+        /// </summary>
+        /// <param name="_direction"></param>
+        /// <returns></returns>
         private bool DirectionCheck(string _direction)
         {
             if (_direction != "")
@@ -145,6 +175,12 @@ namespace TrangTestLib
                 return true;
         }
 
+        /// <summary>
+        /// checks if we've reached the alert limit for a certain alert.
+        /// </summary>
+        /// <param name="_alertId"></param>
+        /// <param name="_timesAllowed"></param>
+        /// <returns></returns>
         private bool TimesCheck(int _alertId, string _timesAllowed)
         {
             int allowed = 0;
@@ -153,6 +189,9 @@ namespace TrangTestLib
             return allowed == 0 | NumberOfAlerts.CheckTimesRaised(_alertId) == 0;
         }
 
+        /// <summary>
+        /// detects the direction of change between two temperatures
+        /// </summary>
         private string CheckDirectionOfChange
         {
             get
@@ -184,6 +223,9 @@ namespace TrangTestLib
             }
         }
 
+        /// <summary>
+        /// detects the amount of change between two temperatures
+        /// </summary>
         private double ChangeAmount
         {
             get

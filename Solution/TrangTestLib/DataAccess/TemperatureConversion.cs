@@ -11,11 +11,6 @@ namespace TrangTestLib.DataAccess
         private int typeId_to;
         private string formula;
 
-        //public int Id { get { return id; } }
-        //public int TypeId_From { get { return typeId_from; } }
-        //public int TypeId_To {  get { return typeId_to; } }
-        //public string Formula { get { return formula; } }
-
         /// <summary>
         /// finds a row in the XML data that matches the specific conversion formula
         /// </summary>

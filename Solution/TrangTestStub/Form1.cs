@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TrangTestLib.Data;
 using TrangTestLib.DataAccess;
@@ -30,12 +27,20 @@ namespace TrangTestStub
             InitializeComponent();
         }
 
+        /// <summary>
+        /// adds custom event handlers
+        /// </summary>
         private void AddEventHandlers()
         {
             thermometer.OutputTemps += Thermometer_OutputTemps;
             thermometer.RaiseAlert += Thermometer_RaiseAlert;
         }
 
+        /// <summary>
+        /// handles the interfaces part of raising an alert
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Thermometer_RaiseAlert(object sender, TrangTestLib.AlertEventArgs e)
         {
             gbAlert.Visible = true;
@@ -45,6 +50,11 @@ namespace TrangTestStub
             txtAlertMessage.BackColor = Color.Red;
         }
 
+        /// <summary>
+        /// handles the interfaces part of Outputing Temperatures
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Thermometer_OutputTemps(object sender, TrangTestLib.OutputEventArgs e)
         {
             DisplayItem item = new DisplayItem();
@@ -55,6 +65,9 @@ namespace TrangTestStub
 
         }
 
+        /// <summary>
+        /// sets up the output grid ti display converted temperatures
+        /// </summary>
         private void SetupOutputGrid()
         {
             dgvOutput.DataSource = (from d in displayItems
@@ -67,6 +80,11 @@ namespace TrangTestStub
                 dgvOutput.FirstDisplayedScrollingRowIndex = displayItems.Count - 1;
         }
 
+        /// <summary>
+        /// loads the form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
             // load all the drop down values for alerts
@@ -88,6 +106,11 @@ namespace TrangTestStub
             AddEventHandlers();
         }
 
+        /// <summary>
+        /// starts the save function
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnSaveAlert_Click(object sender, EventArgs e)
         {
             if(!IsValid)
@@ -106,6 +129,9 @@ namespace TrangTestStub
             }
         }
 
+        /// <summary>
+        /// saves an alert that was loaded for editing
+        /// </summary>
         private void SaveAlert()
         {
             // define the temperature threshold values
@@ -141,6 +167,9 @@ namespace TrangTestStub
             editAlert = null;
         }
 
+        /// <summary>
+        /// saves a new alert
+        /// </summary>
         private void SaveNewAlert()
         {
             // define the temperature threshold values
@@ -175,6 +204,9 @@ namespace TrangTestStub
             newAlert.Save();
         }
 
+        /// <summary>
+        /// checks all fields on the alerts infterface for valid data.
+        /// </summary>
         private bool IsValid
         {
             get
@@ -223,6 +255,11 @@ namespace TrangTestStub
             }
         }
 
+        /// <summary>
+        /// checks if the input string is in fact a number
+        /// </summary>
+        /// <param name="_inputText">string to parse for a numerical value</param>
+        /// <returns></returns>
         private bool IsNumber(string _inputText)
         {
             try
@@ -236,21 +273,41 @@ namespace TrangTestStub
             }
         }
 
+        /// <summary>
+        /// enables/disables the groubox associated with number of times alerted data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cbNum_CheckedChanged(object sender, EventArgs e)
         {
             gbNum.Enabled = cbNum.Checked;
         }
 
+        /// <summary>
+        /// enables/disables the groubox associated with direction data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cbDir_CheckedChanged(object sender, EventArgs e)
         {
             gbDir.Enabled = cbDir.Checked;
         }
 
+        /// <summary>
+        /// enables/disables the groupbox associated with Fluctuation data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cbFlux_CheckedChanged(object sender, EventArgs e)
         {
             gbFlux.Enabled = cbFlux.Checked;
         }
 
+        /// <summary>
+        /// loads an alert for editing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnEditAlert_Click(object sender, EventArgs e)
         {
             if (dgvAlerts.SelectedRows.Count == 1)
@@ -292,6 +349,11 @@ namespace TrangTestStub
                 ShowError("You must select an alerts row.");
         }
 
+        /// <summary>
+        /// finds the passed item in the passed control and selects it.
+        /// </summary>
+        /// <param name="_control">ComboBox control to search in</param>
+        /// <param name="_itemToSelect">single character string to match on the first character of the combobox entry</param>
         private void SelectItem(ComboBox _control, string _itemToSelect)
         {
             foreach (object item in _control.Items)
@@ -304,6 +366,11 @@ namespace TrangTestStub
             }
         }
 
+        /// <summary>
+        /// deletes an alert from the dataset
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnDeleteAlert_Click(object sender, EventArgs e)
         {
             if (dgvAlerts.SelectedRows.Count == 1)
@@ -330,6 +397,9 @@ namespace TrangTestStub
                 ShowError("You must select an alerts row.");
         }
 
+        /// <summary>
+        /// displays the alerts in the grid for the user to view
+        /// </summary>
         private void SetupAlertsGrid()
         {
             TrangTest data = TrangTestLib.Data.XMLOperations.ReadXML();
@@ -358,6 +428,9 @@ namespace TrangTestStub
 
         }
 
+        /// <summary>
+        /// clears the form
+        /// </summary>
         private void ClearForm()
         {
             cbNum.Checked = false;
@@ -382,12 +455,18 @@ namespace TrangTestStub
             MessageBox.Show(_message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        /// <summary>
+        /// runs the main purpose of the application, converts and tests the temperatures listed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnTest_Click(object sender, EventArgs e)
         {
             if (IsNumber(txtDelay.Text))
             {
                 displayItems.Clear();
                 txtDelay.Enabled = false;
+                txtTestTemps.Enabled = false;
                 string[] temps = txtTestTemps.Text.Split(System.Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 foreach (string t in temps)
                 {
@@ -398,6 +477,7 @@ namespace TrangTestStub
                 }
                 ShowMessage("Done.");
                 txtDelay.Enabled = true;
+                txtTestTemps.Enabled = true;
             }
             else
             {

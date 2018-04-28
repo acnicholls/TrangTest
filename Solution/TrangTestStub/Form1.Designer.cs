@@ -56,6 +56,9 @@
             this.label6 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtDelay = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.gbOutput = new System.Windows.Forms.GroupBox();
             this.dgvOutput = new System.Windows.Forms.DataGridView();
             this.gbAlert = new System.Windows.Forms.GroupBox();
@@ -66,9 +69,6 @@
             this.btnEditAlert = new System.Windows.Forms.Button();
             this.gbGrid = new System.Windows.Forms.GroupBox();
             this.dgvAlerts = new System.Windows.Forms.DataGridView();
-            this.label9 = new System.Windows.Forms.Label();
-            this.txtDelay = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
             this.gbAlerts.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.gbDir.SuspendLayout();
@@ -95,7 +95,7 @@
             this.txtInstructions.TabIndex = 1;
             this.txtInstructions.Text = "Enter your test temperatures below, one per line.\r\nYou can use negatives.\r\nFollow" +
     " each numerical value with a single character representing the type of temperatu" +
-    "re. \r\nC for Celcius,\r\nF for Farenheit.";
+    "re. \r\nC for Celsius,\r\nF for Fahrenheit.";
             // 
             // btnTest
             // 
@@ -381,6 +381,33 @@
             this.tabPage1.Text = "TemperatureTest";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(206, 150);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(50, 13);
+            this.label10.TabIndex = 8;
+            this.label10.Text = "seconds.";
+            // 
+            // txtDelay
+            // 
+            this.txtDelay.Location = new System.Drawing.Point(152, 147);
+            this.txtDelay.Name = "txtDelay";
+            this.txtDelay.Size = new System.Drawing.Size(48, 20);
+            this.txtDelay.TabIndex = 7;
+            this.txtDelay.Text = "5";
+            this.txtDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(132, 121);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(121, 13);
+            this.label9.TabIndex = 6;
+            this.label9.Text = "Display each reading for";
+            // 
             // gbOutput
             // 
             this.gbOutput.Controls.Add(this.dgvOutput);
@@ -499,33 +526,6 @@
             this.dgvAlerts.ShowEditingIcon = false;
             this.dgvAlerts.Size = new System.Drawing.Size(656, 173);
             this.dgvAlerts.TabIndex = 0;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(132, 121);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(121, 13);
-            this.label9.TabIndex = 6;
-            this.label9.Text = "Display each reading for";
-            // 
-            // txtDelay
-            // 
-            this.txtDelay.Location = new System.Drawing.Point(152, 147);
-            this.txtDelay.Name = "txtDelay";
-            this.txtDelay.Size = new System.Drawing.Size(48, 20);
-            this.txtDelay.TabIndex = 7;
-            this.txtDelay.Text = "5";
-            this.txtDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(206, 150);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(50, 13);
-            this.label10.TabIndex = 8;
-            this.label10.Text = "seconds.";
             // 
             // Form1
             // 

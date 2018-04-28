@@ -73,8 +73,8 @@ namespace TrangTestStub
             dgvOutput.DataSource = (from d in displayItems
                                     select new { d.tempC, d.tempF }).ToList();
 
-            dgvOutput.Columns["tempC"].HeaderText = "Celcius";
-            dgvOutput.Columns["tempF"].HeaderText = "Farenheit";
+            dgvOutput.Columns["tempC"].HeaderText = "Celsius";
+            dgvOutput.Columns["tempF"].HeaderText = "Fahrenheit";
 
             if(displayItems.Count > 0)
                 dgvOutput.FirstDisplayedScrollingRowIndex = displayItems.Count - 1;

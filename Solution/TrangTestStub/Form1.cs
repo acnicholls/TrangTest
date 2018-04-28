@@ -123,7 +123,7 @@ namespace TrangTestStub
                 if(editAlert == null)
                     SaveNewAlert();
                 else
-                    SaveAlert();
+                    UpdateAlert();
                 ClearForm();
                 SetupAlertsGrid();
             }
@@ -132,38 +132,33 @@ namespace TrangTestStub
         /// <summary>
         /// saves an alert that was loaded for editing
         /// </summary>
-        private void SaveAlert()
+        private void UpdateAlert()
         {
             // define the temperature threshold values
-            TemperatureType tempType = new TemperatureType(Convert.ToInt32(cboTempType.SelectedValue));
-            TemperatureThreshold newThreshold = new TemperatureThreshold(editAlert.ThresholdId);
-            newThreshold.Temperature = Convert.ToDouble(txtThresholdTemp.Text);
-            newThreshold.TypeId = tempType.Id;
-            newThreshold.Name = txtThresholdName.Text;
-            newThreshold.Save();
+            editAlert.Threshold.Temperature = Convert.ToDouble(txtThresholdTemp.Text);
+            editAlert.Threshold.TypeId = new TemperatureType(Convert.ToInt32(cboTempType.SelectedValue)).Id;
+            editAlert.Threshold.Name = txtThresholdName.Text;
             // now define the alert values
-            TemperatureAlert formAlert = new TemperatureAlert(editAlert.Id);
-            formAlert.ThresholdId = newThreshold.Id;
-            formAlert.Message = txtThresholdMessage.Text;
+            editAlert.Message = txtThresholdMessage.Text;
             if (cbFlux.Checked)
             {
-                formAlert.MinimumFlucuation = Convert.ToDouble(txtThresholdFlux.Text);
+                editAlert.MinimumFlucuation = Convert.ToDouble(txtThresholdFlux.Text);
             }
             else
-                formAlert.MinimumFlucuation = 0;
+                editAlert.MinimumFlucuation = 0;
             if (cbDir.Checked)
             {
-                formAlert.Direction = cboTempDirection.SelectedValue.ToString().ToUpper().Substring(0, 1);
+                editAlert.Direction = cboTempDirection.SelectedItem.ToString().ToUpper().Substring(0, 1);
             }
             else
-                formAlert.Direction = "";
+                editAlert.Direction = "";
             if (cbNum.Checked)
             {
-                formAlert.Times = cboAlertTimes.SelectedValue.ToString().ToUpper().Substring(0, 1);
+                editAlert.Times = cboAlertTimes.SelectedItem.ToString().ToUpper().Substring(0, 1);
             }
             else
-                formAlert.Times = "";
-            formAlert.Save();
+                editAlert.Times = "";
+            editAlert.Update();
             editAlert = null;
         }
 
@@ -173,15 +168,11 @@ namespace TrangTestStub
         private void SaveNewAlert()
         {
             // define the temperature threshold values
-            TemperatureType tempType = new TemperatureType(Convert.ToInt32(cboTempType.SelectedValue));
-            TemperatureThreshold newThreshold = new TemperatureThreshold();
-            newThreshold.Temperature = Convert.ToDouble(txtThresholdTemp.Text);
-            newThreshold.TypeId = tempType.Id;
-            newThreshold.Name = txtThresholdName.Text;
-            newThreshold.Save();
-            // now define the alert values
             TemperatureAlert newAlert = new TemperatureAlert();
-            newAlert.ThresholdId = newThreshold.Id;
+            newAlert.Threshold.Temperature = Convert.ToDouble(txtThresholdTemp.Text);
+            newAlert.Threshold.TypeId = new TemperatureType(Convert.ToInt32(cboTempType.SelectedValue)).Id;
+            newAlert.Threshold.Name = txtThresholdName.Text;
+            // now define the alert values
             newAlert.Message = txtThresholdMessage.Text;
             if (cbFlux.Checked)
             {
@@ -316,7 +307,7 @@ namespace TrangTestStub
                 {
                     int itemToEdit = Convert.ToInt32(dgvAlerts.SelectedRows[0].Cells["TempAlert_ID"].Value);
                     editAlert = new TemperatureAlert(itemToEdit);
-                    TemperatureThreshold alertThreshold = new TemperatureThreshold(editAlert.ThresholdId);
+                    TemperatureThreshold alertThreshold = new TemperatureThreshold(editAlert.Threshold.Id);
                     // now load the interface with the values
                     txtThresholdTemp.Text = alertThreshold.Temperature.ToString();
                     TemperatureType t = new TemperatureType(alertThreshold.TypeId);

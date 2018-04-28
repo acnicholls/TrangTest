@@ -37,14 +37,7 @@ namespace TrangTestLib.DataAccess
             // define a new threshold row
             Data.TrangTest.TemperatureThresholdsRow threshRow;
             // are we updating the row or adding a new one?
-            if (id > 0)
-            {
-                threshRow = ds.TemperatureThresholds.First(tt => tt.TempThreshold_ID == id);
-            }
-            else
-            {
-                threshRow = ds.TemperatureThresholds.NewTemperatureThresholdsRow();
-            }
+            threshRow = ds.TemperatureThresholds.NewTemperatureThresholdsRow();
             // add or update all the values the user can change
             threshRow.TempThreshold_Name = name;
             threshRow.TempThreshold_TypeID = typeId;
@@ -55,6 +48,20 @@ namespace TrangTestLib.DataAccess
             Data.XMLOperations.WriteXML(ds);
             if(id < 1)
                 id = threshRow.TempThreshold_ID;
+        }
+
+        public void Update()
+        {
+            Data.TrangTest ds = Data.XMLOperations.ReadXML();
+            // define a new threshold row
+            Data.TrangTest.TemperatureThresholdsRow threshRow = ds.TemperatureThresholds.First(tt => tt.TempThreshold_ID == id);
+            // add or update all the values the user can change
+            threshRow.TempThreshold_Name = name;
+            threshRow.TempThreshold_TypeID = typeId;
+            threshRow.TempThreshold_Value = temp;
+            // now save the new threshold to the database
+            ds.AcceptChanges();
+            Data.XMLOperations.WriteXML(ds);
         }
 
     }

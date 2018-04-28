@@ -76,7 +76,7 @@ namespace TrangTestLib
                         DataAccess.TemperatureAlert alert = new DataAccess.TemperatureAlert(alertId);
                         AlertEventArgs args = new AlertEventArgs();
                         args.AlertId = alert.Id;
-                        args.AlertName = new DataAccess.TemperatureThreshold(alert.ThresholdId).Name;
+                        args.AlertName = new DataAccess.TemperatureThreshold(alert.Threshold.Id).Name;
                         args.AlertMessage = alert.Message;
                         OnRaiseAlert(args);
                     }

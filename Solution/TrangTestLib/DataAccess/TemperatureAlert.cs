@@ -9,14 +9,14 @@ namespace TrangTestLib.DataAccess
     public class TemperatureAlert
     {
         private int id;
-        private int thresholdId;
+        private TemperatureThreshold threshold;
         private string direction;
         private double minFlucuation;
         private string times;
         private string message;
 
         public int Id { get { return id; } }
-        public int ThresholdId { get { return thresholdId; } set { thresholdId = value; } }
+        public TemperatureThreshold Threshold { get { return threshold; } set { threshold = value; } }
         public string Direction { get { return direction; } set { direction = value; } }
         public double MinimumFlucuation { get { return minFlucuation; }set { minFlucuation = value; } }
         public string Times { get { return times; }set { times = value; } }
@@ -25,6 +25,7 @@ namespace TrangTestLib.DataAccess
         public TemperatureAlert()
         {
             id = 0;
+            threshold = new TemperatureThreshold();
         }
 
         public TemperatureAlert(int _id)
@@ -33,7 +34,7 @@ namespace TrangTestLib.DataAccess
             if(alertRow != null)
             {
                 id = alertRow.TempAlert_ID;
-                thresholdId = alertRow.TempAlert_ThresholdID;
+                threshold = new TemperatureThreshold(alertRow.TempAlert_ThresholdID);
                 direction = alertRow.TempAlert_Direction;
                 minFlucuation = alertRow.TempAlert_MinFluctuation;
                 times = alertRow.TempAlert_Times;
@@ -43,27 +44,39 @@ namespace TrangTestLib.DataAccess
 
         public void Save()
         {
+            threshold.Save();
             Data.TrangTest ds = Data.XMLOperations.ReadXML();
             Data.TrangTest.TemperatureAlertsRow alertRow;
-            if(id > 0)
-            {
-                alertRow = ds.TemperatureAlerts.First(ta => ta.TempAlert_ID == id);
-            }
-            else
-            {
-                alertRow = ds.TemperatureAlerts.NewTemperatureAlertsRow();
-            }
+            alertRow = ds.TemperatureAlerts.NewTemperatureAlertsRow();
+            // add the other column info
             alertRow.TempAlert_Direction = direction;
             alertRow.TempAlert_MinFluctuation = minFlucuation;
-            alertRow.TempAlert_ThresholdID = thresholdId;
+            alertRow.TempAlert_ThresholdID = threshold.Id;
             alertRow.TempAlert_Times = times;
             alertRow.TempAlert_Message = message;
             // now add it to the dataset
             ds.TemperatureAlerts.AddTemperatureAlertsRow(alertRow);
             ds.AcceptChanges();
             Data.XMLOperations.WriteXML(ds);
+            // grab the ID
             if (id < 1)
                 id = alertRow.TempAlert_ID;
+        }
+
+        public void Update()
+        {
+            threshold.Update();
+            Data.TrangTest ds = Data.XMLOperations.ReadXML();
+            Data.TrangTest.TemperatureAlertsRow alertRow = ds.TemperatureAlerts.First(ta => ta.TempAlert_ID == id);
+            // update the remainder of the information
+            alertRow.TempAlert_Direction = direction;
+            alertRow.TempAlert_MinFluctuation = minFlucuation;
+            alertRow.TempAlert_ThresholdID = threshold.Id;
+            alertRow.TempAlert_Times = times;
+            alertRow.TempAlert_Message = message;
+            // now add it to the dataset
+            ds.AcceptChanges();
+            Data.XMLOperations.WriteXML(ds);
         }
 
     }

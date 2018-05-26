@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.txtInstructions = new System.Windows.Forms.TextBox();
             this.btnTest = new System.Windows.Forms.Button();
             this.cboTempType = new System.Windows.Forms.ComboBox();
@@ -91,15 +92,13 @@
             this.txtInstructions.Location = new System.Drawing.Point(8, 6);
             this.txtInstructions.Multiline = true;
             this.txtInstructions.Name = "txtInstructions";
-            this.txtInstructions.Size = new System.Drawing.Size(287, 85);
+            this.txtInstructions.Size = new System.Drawing.Size(287, 98);
             this.txtInstructions.TabIndex = 1;
-            this.txtInstructions.Text = "Enter your test temperatures below, one per line.\r\nYou can use negatives.\r\nFollow" +
-    " each numerical value with a single character representing the type of temperatu" +
-    "re. \r\nC for Celsius,\r\nF for Fahrenheit.";
+            this.txtInstructions.Text = resources.GetString("txtInstructions.Text");
             // 
             // btnTest
             // 
-            this.btnTest.Location = new System.Drawing.Point(8, 289);
+            this.btnTest.Location = new System.Drawing.Point(8, 293);
             this.btnTest.Name = "btnTest";
             this.btnTest.Size = new System.Drawing.Size(287, 25);
             this.btnTest.TabIndex = 2;
@@ -453,7 +452,7 @@
             // 
             // txtTestTemps
             // 
-            this.txtTestTemps.Location = new System.Drawing.Point(8, 97);
+            this.txtTestTemps.Location = new System.Drawing.Point(8, 102);
             this.txtTestTemps.Multiline = true;
             this.txtTestTemps.Name = "txtTestTemps";
             this.txtTestTemps.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;

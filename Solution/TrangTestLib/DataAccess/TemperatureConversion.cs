@@ -68,7 +68,7 @@ namespace TrangTestLib.DataAccess
             Microsoft.JScript.Vsa.VsaEngine calcEngine = Microsoft.JScript.Vsa.VsaEngine.CreateEngine();
             string formula = string.Format(ConversionFormula(_from, _to), temperature);
             object result = Eval.JScriptEvaluate(formula, calcEngine);
-            return Math.Round(System.Convert.ToDouble(result), 1);
+            return Math.Round(System.Convert.ToDouble(result), 2);
         }
 
     }

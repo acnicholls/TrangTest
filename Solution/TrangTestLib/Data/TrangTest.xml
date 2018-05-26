@@ -9,6 +9,11 @@
     <TempType_Name>Farenheit</TempType_Name>
     <TempType_Indicator>F</TempType_Indicator>
   </TemperatureTypes>
+  <TemperatureTypes>
+    <TempType_ID>3</TempType_ID>
+    <TempType_Name>Kelvin</TempType_Name>
+    <TempType_Indicator>K</TempType_Indicator>
+  </TemperatureTypes>  
   <TemperatureConversions>
     <TempCon_ID>1</TempCon_ID>
     <TempCon_From_TypeID>1</TempCon_From_TypeID>
@@ -20,5 +25,29 @@
     <TempCon_From_TypeID>2</TempCon_From_TypeID>
     <TempCon_To_TypeID>1</TempCon_To_TypeID>
     <TempCon_Formula>({0} - 32) * 5/9</TempCon_Formula>
+  </TemperatureConversions>
+  <TemperatureConversions>
+    <TempCon_ID>3</TempCon_ID>
+    <TempCon_From_TypeID>1</TempCon_From_TypeID>
+    <TempCon_To_TypeID>3</TempCon_To_TypeID>
+    <TempCon_Formula>{0} + 273.15</TempCon_Formula>
+  </TemperatureConversions>
+  <TemperatureConversions>
+    <TempCon_ID>4</TempCon_ID>
+    <TempCon_From_TypeID>3</TempCon_From_TypeID>
+    <TempCon_To_TypeID>1</TempCon_To_TypeID>
+    <TempCon_Formula>{0} - 273.15</TempCon_Formula>
+  </TemperatureConversions>
+  <TemperatureConversions>
+    <TempCon_ID>5</TempCon_ID>
+    <TempCon_From_TypeID>2</TempCon_From_TypeID>
+    <TempCon_To_TypeID>3</TempCon_To_TypeID>
+    <TempCon_Formula>({0} + 459.67) * 5/9</TempCon_Formula>
+  </TemperatureConversions>
+  <TemperatureConversions>
+    <TempCon_ID>6</TempCon_ID>
+    <TempCon_From_TypeID>3</TempCon_From_TypeID>
+    <TempCon_To_TypeID>2</TempCon_To_TypeID>
+    <TempCon_Formula>({0} * (9/5)) - 459.67</TempCon_Formula>
   </TemperatureConversions>
 </TrangTest>

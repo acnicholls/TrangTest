@@ -18,6 +18,7 @@ namespace TrangTestStub
         {
             public string tempC;
             public string tempF;
+            public string tempK;
         }
 
         List<DisplayItem> displayItems = new List<DisplayItem>();
@@ -60,6 +61,7 @@ namespace TrangTestStub
             DisplayItem item = new DisplayItem();
             item.tempC = e.InputTemp.ConvertedTemperature("C");
             item.tempF = e.InputTemp.ConvertedTemperature("F");
+            item.tempK = e.InputTemp.ConvertedTemperature("K");
             displayItems.Add(item);
             SetupOutputGrid();
 
@@ -71,10 +73,11 @@ namespace TrangTestStub
         private void SetupOutputGrid()
         {
             dgvOutput.DataSource = (from d in displayItems
-                                    select new { d.tempC, d.tempF }).ToList();
+                                    select new { d.tempC, d.tempF, d.tempK }).ToList();
 
             dgvOutput.Columns["tempC"].HeaderText = "Celsius";
             dgvOutput.Columns["tempF"].HeaderText = "Fahrenheit";
+            dgvOutput.Columns["tempK"].HeaderText = "Kelvin";
 
             if(displayItems.Count > 0)
                 dgvOutput.FirstDisplayedScrollingRowIndex = displayItems.Count - 1;

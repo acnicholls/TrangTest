@@ -61,7 +61,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Data\TrangTest.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

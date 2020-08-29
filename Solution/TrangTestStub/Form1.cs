@@ -456,30 +456,49 @@ namespace TrangTestStub
         /// <param name="e"></param>
         private void btnTest_Click(object sender, EventArgs e)
         {
-            if (IsNumber(txtDelay.Text))
+            try
             {
-                displayItems.Clear();
-                txtDelay.Enabled = false;
-                txtTestTemps.Enabled = false;
-                string[] temps = txtTestTemps.Text.Split(System.Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                foreach (string t in temps)
+                DisableInputs();
+                if (IsNumber(txtDelay.Text))
                 {
-                    gbAlert.Visible = false;
-                    thermometer.InputTemperature(t);
-                    Application.DoEvents();
-                    System.Threading.Thread.Sleep(Convert.ToInt32(txtDelay.Text) * 1000);
+                    displayItems.Clear();
+                    string[] temps = txtTestTemps.Text.Split(System.Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string t in temps)
+                    {
+                        gbAlert.Visible = false;
+                        thermometer.InputTemperature(t);
+                        Application.DoEvents();
+                        System.Threading.Thread.Sleep(Convert.ToInt32(txtDelay.Text) * 1000);
+                    }
+                    ShowMessage("Done.");
                 }
-                ShowMessage("Done.");
-                txtDelay.Enabled = true;
-                txtTestTemps.Enabled = true;
+                else
+                {
+                    ShowError("You must have a number in the delay field.");
+                }
             }
-            else
+            catch(Exception x)
             {
-                ShowError("You must have a number in the delay field.");
+                ShowError($"Error:{x.Message}");
+            }
+            finally
+            {
+                EnableInputs();
             }
         }
 
+        private void DisableInputs()
+        {
 
+            txtDelay.Enabled = false;
+            txtTestTemps.Enabled = false;
+        }
+
+        private void EnableInputs()
+        {
+            txtDelay.Enabled = true;
+            txtTestTemps.Enabled = true;
+        }
 
 
     }

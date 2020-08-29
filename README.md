@@ -1,7 +1,7 @@
 # TrangTest
 Test for Paul Trang's AEC Project
 
-This project was given to me in early 2018 as an assignment toward employment.  I had a weekend to prove that I can code in C#.  
+This project was given to me in early 2018 as an assignment toward employment.  I had a weekend to prove that I can code in C#.  The application will convert and display temperatures as well as alert the user when certain criteria are met
 
 # Versions
 There are now three different versions of this project.  

@@ -14,11 +14,18 @@ namespace TrangTestLib.DataAccess
         public int TypeId { get { return typeId; } set { typeId = value; } }
         public double Temperature {  get { return temp; } set { temp = value; } }
 
+        /// <summary>
+        /// basic ctor
+        /// </summary>
         public TemperatureThreshold()
         {
             id = 0;
         }
 
+        /// <summary>
+        /// database row id ctor
+        /// </summary>
+        /// <param name="_id"></param>
         public TemperatureThreshold(int _id)
         {
             Data.TrangTest.TemperatureThresholdsRow threshRow = Data.XMLOperations.ReadXML().TemperatureThresholds.First(tt => tt.TempThreshold_ID == _id);
@@ -31,6 +38,9 @@ namespace TrangTestLib.DataAccess
             }
         }
 
+        /// <summary>
+        /// this method will save the current object to the database
+        /// </summary>
         public void Save()
         {
             Data.TrangTest ds = Data.XMLOperations.ReadXML();
@@ -50,6 +60,9 @@ namespace TrangTestLib.DataAccess
                 id = threshRow.TempThreshold_ID;
         }
 
+        /// <summary>
+        /// this method will udpate the current object in the database
+        /// </summary>
         public void Update()
         {
             Data.TrangTest ds = Data.XMLOperations.ReadXML();

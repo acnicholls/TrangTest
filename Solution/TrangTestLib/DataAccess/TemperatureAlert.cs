@@ -22,12 +22,19 @@ namespace TrangTestLib.DataAccess
         public string Times { get { return times; }set { times = value; } }
         public string Message { get { return message; } set { message = value; } }
 
+        /// <summary>
+        /// basic ctor
+        /// </summary>
         public TemperatureAlert()
         {
             id = 0;
             threshold = new TemperatureThreshold();
         }
 
+        /// <summary>
+        /// database row ctor
+        /// </summary>
+        /// <param name="_id"></param>
         public TemperatureAlert(int _id)
         {
             Data.TrangTest.TemperatureAlertsRow alertRow = Data.XMLOperations.ReadXML().TemperatureAlerts.First(ta => ta.TempAlert_ID == _id);
@@ -42,6 +49,9 @@ namespace TrangTestLib.DataAccess
             }
         }
 
+        /// <summary>
+        /// this method will save the current object to the database
+        /// </summary>
         public void Save()
         {
             threshold.Save();
@@ -63,6 +73,9 @@ namespace TrangTestLib.DataAccess
                 id = alertRow.TempAlert_ID;
         }
 
+        /// <summary>
+        /// this method will update the current object in the database
+        /// </summary>
         public void Update()
         {
             threshold.Update();

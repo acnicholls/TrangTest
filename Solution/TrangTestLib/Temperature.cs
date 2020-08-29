@@ -57,6 +57,11 @@ namespace TrangTestLib
             }
         }
 
+        /// <summary>
+        /// this method will test the input string to see if it matches criteria to hold a valid temperature 
+        /// </summary>
+        /// <param name="_temp">the input string</param>
+        /// <returns>true if the string can be converted to a temperature</returns>
         private bool ValidateInputString(string _temp)
         {
             //convert to character array

@@ -514,6 +514,5 @@ namespace TrangTestStub
             txtTestTemps.Enabled = true;
         }
 
-
     }
 }

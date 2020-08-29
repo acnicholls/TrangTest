@@ -15,7 +15,7 @@ namespace TrangTestLib.DataAccess
         public TemperatureType(string _indicator)
         {
 
-            Data.TrangTest.TemperatureTypesRow typeRow = Data.XMLOperations.ReadXML().TemperatureTypes.First(tt => tt.TempType_Indicator == _indicator);
+            Data.TrangTest.TemperatureTypesRow typeRow = Data.XMLOperations.ReadXML().TemperatureTypes.First(tt => tt.TempType_Indicator == _indicator.ToUpper());
             id = typeRow.TempType_ID;
             name = typeRow.TempType_Name;
             indicator = typeRow.TempType_Indicator;

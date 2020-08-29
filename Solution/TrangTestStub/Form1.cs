@@ -474,7 +474,7 @@ namespace TrangTestStub
                     foreach (string t in temps)
                     {
                         gbAlert.Visible = false;
-                        thermometer.InputTemperature(t);
+                        thermometer.InputTemperature(t.ToUpper());
                         Application.DoEvents();
                         System.Threading.Thread.Sleep(Convert.ToInt32(Math.Round(Convert.ToDecimal(txtDelay.Text) * 1000)));
                     }

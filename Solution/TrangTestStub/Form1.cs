@@ -439,11 +439,19 @@ namespace TrangTestStub
             txtThresholdTemp.Text = "";
         }
 
+        /// <summary>
+        /// this method shows a generic popup error message, with the red circle and X icon
+        /// </summary>
+        /// <param name="_message">the message to display</param>
         private void ShowError(string _message)
         {
             MessageBox.Show(_message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
+        /// <summary>
+        /// this method shows a generic popup message with the information icon
+        /// </summary>
+        /// <param name="_message">the message to display</param>
         private void ShowMessage(string _message)
         {
             MessageBox.Show(_message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -487,6 +495,9 @@ namespace TrangTestStub
             }
         }
 
+        /// <summary>
+        /// this method will disable text inputs during execution
+        /// </summary>
         private void DisableInputs()
         {
 
@@ -494,6 +505,9 @@ namespace TrangTestStub
             txtTestTemps.Enabled = false;
         }
 
+        /// <summary>
+        /// this method will enable text inputs once exection completes
+        /// </summary>
         private void EnableInputs()
         {
             txtDelay.Enabled = true;

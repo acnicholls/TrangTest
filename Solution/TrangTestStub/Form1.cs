@@ -258,7 +258,7 @@ namespace TrangTestStub
         {
             try
             {
-                double maybeNumber = Convert.ToDouble(_inputText);
+                decimal maybeNumber = Convert.ToDecimal(_inputText);
                 return true;
             }
             catch(Exception x)
@@ -468,7 +468,7 @@ namespace TrangTestStub
                         gbAlert.Visible = false;
                         thermometer.InputTemperature(t);
                         Application.DoEvents();
-                        System.Threading.Thread.Sleep(Convert.ToInt32(txtDelay.Text) * 1000);
+                        System.Threading.Thread.Sleep(Convert.ToInt32(Math.Round(Convert.ToDecimal(txtDelay.Text) * 1000)));
                     }
                     ShowMessage("Done.");
                 }

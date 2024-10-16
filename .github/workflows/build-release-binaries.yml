@@ -30,11 +30,6 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1
 
-      # ensure we start executing commands in the correct folder
-      - name: Navigate to Workspace
-        run: |
-          cd ${{ github.workspace }}\Solution
-
       # create the output folder
       - name: Create Build Directory
         run: mkdir _build
@@ -42,6 +37,7 @@ jobs:
       # run msbuild to create the executable
       - name: build executable
         id: build-ui-executable
+        working-directory: Solution
         run: |
           msbuild.exe `
           TrangTest.sln `
@@ -53,7 +49,7 @@ jobs:
           /p:DeleteExistingFiles=True `
           /p:platform="Any CPU" `
           /p:configuration="Release" `
-          /p:PublishUrl="./_build" `
+          /p:PublishUrl="..\_build" `
           -fl
 
       # send build log to github output
@@ -78,7 +74,7 @@ jobs:
       - name: zip build artifact
         id: zip-build-artifact
         run: |
-          7z a -tzip ${{ github.workspace }}\Build_Release.zip ${{ github.workspace }}\Solution\_build
+          7z a -tzip ${{ github.workspace }}\Build_Release.zip ${{ github.workspace }}\_build
 
       # send build output to github output
       - name: Upload Build Artifact

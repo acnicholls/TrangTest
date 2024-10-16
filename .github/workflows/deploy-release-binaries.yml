@@ -35,8 +35,7 @@ jobs:
       # move to the correct folder
       - name: Navigate to Workspace
         run: |
-          cd $GITHUB_WORKSPACE
-          cd Solution
+          cd ${{ github.workspace }}\Solution
 
       # create the output folder
       - name: Create Build Directory

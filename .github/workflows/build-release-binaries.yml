@@ -1,0 +1,91 @@
+# This script builds the end user installer for Folder Size Calculator
+# and then uses the installed to build the portal binaries
+# the portal binaries are them compressed and uploaded to the
+# github action as output.
+name: build-release-binaries
+run-name: Release build for ${{ github.event_name }} triggered by ${{ github.triggering_actor }}
+concurrency:
+  group: release-binaries
+on:
+  pull_request:
+    branches:
+      - master
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  prepare-environment:
+    runs-on: windows-latest
+    steps:
+      # get the latest code from the repo
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # display environment variables, for audit purposes
+      - name: Check Environment
+        run: |
+          dir env:
+
+      # add msbuild to the PATH variable
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+
+      # ensure we start executing commands in the correct folder
+      - name: Navigate to Workspace
+        run: |
+          cd $GITHUB_WORKSPACE
+          cd Solution
+
+      # create the output folder
+      - name: Create Build Directory
+        run: mkdir _build
+
+      # run msbuild to create the executable
+      - name: build executable
+        id: build-ui-executable
+        run: |
+          msbuild.exe \
+          TrangTest.sln \
+          /nologo \
+          /nr:false \
+          /p:DeployOnBuild=true \
+          /p:DeployDefaultTarget=WebPublish \
+          /p:WebPublishMethod=FileSystem \
+          /p:DeleteExistingFiles=True \
+          /p:platform="Any CPU" \
+          /p:configuration="Release" \
+          /p:PublishUrl="./_build" \
+          -fl
+
+      # send build log to github output
+      - name: Upload Build Log
+        id: upload-build-log
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-executable-log
+          path: .\msbuild.log
+          retention-days: 5
+
+      # check for build success before continuing
+      - name: Upload Check
+        id: upload-check
+        if: ${{ steps.build-ui-executable.outcome != 'success' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.setFailed('user-installer build failed, no sense continuing...')
+
+      # zip the build output
+      - name: zip build artifact
+        id: zip-build-artifact
+        run: |
+          7z a -tzip ${{ github.workspace }}\Build_Release.zip ${{ github.workspace }}\Solution\_build
+
+      # send build output to github output
+      - name: Upload Build Artifact
+        id: upload-build-artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-executable-artifact
+          path: ${{ github.workspace }}\Build_Release.zip
+          retention-days: 5

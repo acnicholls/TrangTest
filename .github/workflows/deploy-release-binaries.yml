@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  prepare-environment:
+  build-and-release-binaries:
     runs-on: windows-latest
     steps:
       # get the latest code from the repo

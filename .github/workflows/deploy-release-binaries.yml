@@ -5,14 +5,14 @@ concurrency:
   group: release-binaries
   cancel-in-progress: true
 on:
-  push:
-    branches:
-      - master
-    paths-ignore:
-      - README.md
-      - CHANGELOG.md # Should never be edited anyway
-      - .gitignore
-      - .github/**
+  # push:
+  #   branches:
+  #     - master
+  #   paths-ignore:
+  #     - README.md
+  #     - CHANGELOG.md # Should never be edited anyway
+  #     - .gitignore
+  #     - .github/**
   workflow_dispatch:
 
 jobs:
@@ -72,25 +72,25 @@ jobs:
           script: |
             core.setFailed('user-installer build failed, no sense continuing...')
 
-      # create a tag and a release
-      - name: Create Tag & Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        id: release
-        uses: rymndhng/release-on-push-action@master
-        with:
-          bump_version_scheme: patch
-          tag_prefix: v
-          use_github_release_notes: true
-          release_name: "Release <RELEASE_TAG>"
-          release_body: "Bug fixes and features for stability of the application."
+      # # create a tag and a release
+      # - name: Create Tag & Release
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   id: release
+      #   uses: rymndhng/release-on-push-action@master
+      #   with:
+      #     bump_version_scheme: patch
+      #     tag_prefix: v
+      #     use_github_release_notes: true
+      #     release_name: "Release <RELEASE_TAG>"
+      #     release_body: "Bug fixes and features for stability of the application."
 
-      # display the output of the release
-      - name: Check Output Parameters
-        run: |
-          echo "Got tag name ${{ steps.release.outputs.tag_name }}"
-          echo "Got release version ${{ steps.release.outputs.version }}"
-          echo "Upload release artifacts to ${{ steps.release.outputs.upload_url }}"
+      # # display the output of the release
+      # - name: Check Output Parameters
+      #   run: |
+      #     echo "Got tag name ${{ steps.release.outputs.tag_name }}"
+      #     echo "Got release version ${{ steps.release.outputs.version }}"
+      #     echo "Upload release artifacts to ${{ steps.release.outputs.upload_url }}"
 
       # zip the build output
       - name: zip build artifact
@@ -107,14 +107,14 @@ jobs:
           path: ${{ github.workspace }}\Build_Release.zip
           retention-days: 5
 
-      # upload the build artifact to the release on github
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: ${{ github.workspace }}\Build_Release.zip
-          asset_name: Build_Release.zip
-          asset_content_type: application/zip
+      # # upload the build artifact to the release on github
+      # - name: Upload Release Asset
+      #   id: upload-release-asset
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+      #     asset_path: ${{ github.workspace }}\Build_Release.zip
+      #     asset_name: Build_Release.zip
+      #     asset_content_type: application/zip

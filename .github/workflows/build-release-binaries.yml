@@ -1,7 +1,5 @@
-# This script builds the end user installer for Folder Size Calculator
-# and then uses the installed to build the portal binaries
-# the portal binaries are them compressed and uploaded to the
-# github action as output.
+# this script builds the solution and projects, just to see if they will successfully build
+# before merging a pull request.
 name: build-release-binaries
 run-name: Release build for ${{ github.event_name }} triggered by ${{ github.triggering_actor }}
 concurrency:

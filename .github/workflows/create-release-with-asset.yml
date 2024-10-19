@@ -20,16 +20,16 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     outputs:
-      release-asset-upload-url: ${{ steps.get-release-outputs.outputs.upload_url }}
+      release-asset-upload-url: ${{ steps.create-tag-release.outputs.upload_url }}
     steps:
       # create a tag and a release
       - name: Create Tag & Release
         id: create-tag-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: rymndhng/release-on-push-action@master
+        uses: DasBen/release-on-push-action@master
         with:
-          bump_version_scheme: minor
+          bump_version_scheme: patch
           tag_prefix: v
           use_github_release_notes: true
           release_name: "Release <RELEASE_TAG>"
@@ -42,7 +42,6 @@ jobs:
           echo "Got tag name ${{ steps.create-tag-release.outputs.tag_name }}"
           echo "Got release version ${{ steps.create-tag-release.outputs.version }}"
           echo "Upload release artifacts to ${{ steps.create-tag-release.outputs.upload_url }}"
-          echo "upload_url=${{ steps.create-tag-release.outputs.upload_url }}" >> $GITHUB_OUTPUT
 
   prepare-upload-asset:
     runs-on: windows-latest
@@ -115,6 +114,27 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ needs.create-release.outputs.release-asset-upload-url }}
-          asset_path: ${{ github.workspace }}/Build_Release.zip
+          asset_path: ${{ github.workspace }}\Build_Release.zip
+          asset_name: Build_Release.zip
+          asset_content_type: application/zip
+
+      # send build output to github output
+      - name: Upload Build Artifact
+        id: upload-build-artifact-2
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-executable-artifact-2
+          path: ${{ github.workspace }}\Solution\TrangTestStub\bin\Release\*
+          retention-days: 5
+
+      # upload build output to release
+      - name: Upload Release Asset
+        id: upload-release-asset-2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ needs.create-release.outputs.release-asset-upload-url }}
+          asset_path: ${{ steps.upload-build-artifact-2.outputs.artifact-url }}
           asset_name: Build_Release.zip
           asset_content_type: application/zip

@@ -91,20 +91,20 @@ jobs:
           script: |
             core.setFailed('user-installer build failed, no sense continuing...')
 
+      # send build output to github output
+      - name: Upload Build Artifact
+        id: upload-build-artifact-2
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-executable-artifact-2
+          path: ${{ github.workspace }}\Solution\TrangTestStub\bin\Release\*
+          retention-days: 5
+
       # zip the build output
       - name: zip build artifact
         id: zip-build-artifact
         run: |
           7z a -tzip ${{ github.workspace }}\Build_Release.zip ${{ github.workspace }}\Solution\TrangTestStub\bin\Release\*
-
-      # send build output to github output
-      - name: Upload Build Artifact
-        id: upload-build-artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-executable-artifact
-          path: ${{ github.workspace }}\Build_Release.zip
-          retention-days: 5
 
       # upload build output to release
       - name: Upload Release Asset
@@ -115,26 +115,5 @@ jobs:
         with:
           upload_url: ${{ needs.create-release.outputs.release-asset-upload-url }}
           asset_path: ${{ github.workspace }}\Build_Release.zip
-          asset_name: Build_Release.zip
-          asset_content_type: application/zip
-
-      # send build output to github output
-      - name: Upload Build Artifact
-        id: upload-build-artifact-2
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-executable-artifact-2
-          path: ${{ github.workspace }}\Solution\TrangTestStub\bin\Release\*
-          retention-days: 5
-
-      # upload build output to release
-      - name: Upload Release Asset
-        id: upload-release-asset-2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ needs.create-release.outputs.release-asset-upload-url }}
-          asset_path: ${{ steps.upload-build-artifact-2.outputs.artifact-url }}
           asset_name: Build_Release.zip
           asset_content_type: application/zip
